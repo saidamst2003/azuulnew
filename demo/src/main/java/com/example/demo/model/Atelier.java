@@ -25,17 +25,6 @@ public class Atelier {
     @Column(nullable = false)
     private String categorie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coach_id")
-    private Coach coach;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
-
-
-
-
 
     public Atelier() {}
 
@@ -64,13 +53,6 @@ public class Atelier {
 
     public String getCategorie() { return categorie; }
     public void setCategorie(String categorie) { this.categorie = categorie; }
-
-    public Coach getCoach() { return coach; }
-    public void setCoach(Coach coach) { this.coach = coach; }
-
-    public Admin getAdmin() { return admin; }
-    public void setAdmin(Admin admin) { this.admin = admin; }
-
 
 
 }
