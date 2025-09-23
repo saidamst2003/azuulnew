@@ -1,4 +1,11 @@
 package com.example.demo.dto;
 
-public class AuthUserDTO {
+import com.example.demo.model.Role;
+
+public record AuthUserDTO (
+        Long id,
+        String fullName,
+        String email,
+        Role role
+) {
 }
