@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "coaches")
@@ -13,6 +15,9 @@ public class Coach extends Utilisateur {
     @Column(nullable = false)
     private String specialite;
 
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Atelier> ateliers = new ArrayList<>();
 
     public Coach() {}
 
@@ -33,6 +38,13 @@ public class Coach extends Utilisateur {
         this.specialite = specialite;
     }
 
+    public List<Atelier> getAteliers() {
+        return ateliers;
+    }
+
+    public void setAteliers(List<Atelier> ateliers) {
+        this.ateliers = ateliers;
+    }
 
     @Override
     @JsonIgnore

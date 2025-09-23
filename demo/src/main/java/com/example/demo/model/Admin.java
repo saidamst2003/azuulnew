@@ -13,7 +13,11 @@ import java.util.List;
 @DiscriminatorValue("ADMIN")
 public class Admin extends Utilisateur {
 
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("admin-ateliers")
+    private List<Atelier> ateliers = new ArrayList<>();
 
+    // Constructeur vide
     public Admin() {}
 
     public Admin(@NotBlank(message = "full name is required") String s, @NotBlank(message = "email is required") @Email(message = "please enter a valid email") String email, String encode) {
@@ -24,11 +28,8 @@ public class Admin extends Utilisateur {
 
     }
 
-    // Constructeur pour la création (sans id)
     public Admin(String fullName, String email, String password, Role role) {
         super(null, fullName, email, password, role);
 
     }
-
-
 }
