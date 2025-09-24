@@ -7,6 +7,7 @@ import com.example.demo.repository.AtelierRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AtelierService {
@@ -49,6 +50,12 @@ public class AtelierService {
     //get all
     public List<Atelier> getAllAtelier(){
         return atelierRepo.findAll();
+    }
+
+    // get by id
+    public Optional<Atelier> getAtelierById(Long id){
+        return atelierRepo.findById(id);
+
     }
 
 }

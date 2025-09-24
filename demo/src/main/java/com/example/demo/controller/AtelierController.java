@@ -6,6 +6,7 @@ import com.example.demo.service.AtelierService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ateliers")
@@ -37,5 +38,9 @@ public class AtelierController {
     public List<Atelier> getAllAtelier (){
         return atelierService.getAllAtelier();
    }
+    @GetMapping("/{id}")
+    public Optional<Atelier> getById (@PathVariable Long id){
+         return atelierService.getAtelierById(id);
+    }
 
 }
