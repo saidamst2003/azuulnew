@@ -55,7 +55,11 @@ public class AtelierService {
     // get by id
     public Optional<Atelier> getAtelierById(Long id){
         return atelierRepo.findById(id);
+    }
 
+
+    public void  deletAtelier(Long id){
+        atelierRepo.deleteById(id);
     }
 
 }

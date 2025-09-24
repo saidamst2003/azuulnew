@@ -38,9 +38,16 @@ public class AtelierController {
     public List<Atelier> getAllAtelier (){
         return atelierService.getAllAtelier();
    }
+
+
     @GetMapping("/{id}")
     public Optional<Atelier> getById (@PathVariable Long id){
          return atelierService.getAtelierById(id);
     }
+
+   @DeleteMapping("/{id}")
+    public void  deletAtelier (@PathVariable Long id){
+            atelierService.deletAtelier(id);
+   }
 
 }
