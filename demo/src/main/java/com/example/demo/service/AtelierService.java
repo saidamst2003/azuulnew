@@ -37,10 +37,11 @@ public class AtelierService {
         atelier.setNom(atelierDTO.nom());
         atelier.setDescription(atelierDTO.description());
         atelier.setCategorie(atelierDTO.categorie());
-        atelier.setDate((Date) atelierDTO.date());
+        atelier.setDate(atelierDTO.date());
         atelier.setHeure(atelierDTO.heure());
 
         Atelier update =atelierRepo.save(atelier);
+
         return atelierMapper.toDTO(update);
     }
 

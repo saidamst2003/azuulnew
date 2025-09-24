@@ -1,6 +1,7 @@
 package com.example.demo.model;
 import jakarta.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -16,8 +17,10 @@ public class Atelier {
     @Column(length = 1000)
     private String description;
 
+
+
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(nullable = false)
     private LocalTime heure;
@@ -28,13 +31,16 @@ public class Atelier {
 
     public Atelier() {}
 
-    public Atelier(String nom, String description, Date date, LocalTime heure, String categorie) {
+    public Atelier(Long id, String nom, String description, LocalDate date, LocalTime heure, String categorie) {
+        this.id = id;
         this.nom = nom;
         this.description = description;
         this.date = date;
         this.heure = heure;
         this.categorie = categorie;
     }
+
+
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -45,8 +51,13 @@ public class Atelier {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public LocalTime getHeure() { return heure; }
     public void setHeure(LocalTime heure) { this.heure = heure; }
@@ -55,4 +66,6 @@ public class Atelier {
     public void setCategorie(String categorie) { this.categorie = categorie; }
 
 
+    public void setDate(java.util.Date date) {
+    }
 }
