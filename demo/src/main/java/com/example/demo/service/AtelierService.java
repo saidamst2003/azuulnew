@@ -6,7 +6,7 @@ import com.example.demo.model.Atelier;
 import com.example.demo.repository.AtelierRepo;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.List;
 
 @Service
 public class AtelierService {
@@ -32,7 +32,7 @@ public class AtelierService {
 
     public  AtelierDTO updateAtelier(Long id,AtelierDTO atelierDTO){
 
-        Atelier atelier = atelierRepo.findById(id).get();
+        Atelier atelier = atelierRepo.findById(id).orElseThrow(() -> new RuntimeException("atelier not found "));
 
         atelier.setNom(atelierDTO.nom());
         atelier.setDescription(atelierDTO.description());
@@ -43,6 +43,12 @@ public class AtelierService {
         Atelier update =atelierRepo.save(atelier);
 
         return atelierMapper.toDTO(update);
+    }
+
+
+    //get all
+    public List<Atelier> getAllAtelier(){
+        return atelierRepo.findAll();
     }
 
 }

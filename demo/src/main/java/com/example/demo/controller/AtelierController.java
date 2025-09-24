@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AtelierDTO;
+import com.example.demo.model.Atelier;
 import com.example.demo.service.AtelierService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ateliers")
@@ -23,10 +25,17 @@ public class AtelierController {
  }
 
  //update
-    //
+
     @PutMapping("/{id}")
     public AtelierDTO updateAtelier (@PathVariable Long id, @RequestBody AtelierDTO atelierDTO){
         return atelierService.updateAtelier(id,atelierDTO);
     }
+
+ //get all
+
+   @GetMapping
+    public List<Atelier> getAllAtelier (){
+        return atelierService.getAllAtelier();
+   }
 
 }

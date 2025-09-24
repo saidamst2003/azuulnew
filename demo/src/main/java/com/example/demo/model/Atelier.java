@@ -28,7 +28,6 @@ public class Atelier {
     @Column(nullable = false)
     private String categorie;
 
-
     public Atelier() {}
 
     public Atelier(Long id, String nom, String description, LocalDate date, LocalTime heure, String categorie) {
