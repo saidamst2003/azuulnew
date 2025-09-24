@@ -19,8 +19,10 @@ public class AtelierService {
 
     //creation atelier
 
-    public AtelierDTO createAtelier(Atelier atelier){
-        Atelier saved =atelierRepo.save(atelier);
+    public AtelierDTO createAtelier(AtelierDTO atelier){
+        Atelier atelierEntity = atelierMapper.toEntity(atelier);
+
+        Atelier saved =atelierRepo.save(atelierEntity);
         return atelierMapper.toDTO(saved);
     }
 }
