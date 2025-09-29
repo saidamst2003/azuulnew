@@ -57,7 +57,7 @@ public class AtelierService {
         return atelierRepo.findById(id);
     }
 
-
+//delete
     public void  deletAtelier(Long id){
         atelierRepo.deleteById(id);
     }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ateliers")
-
+@CrossOrigin("http://localhost:4200")
 public class AtelierController {
     private final AtelierService atelierService;
 
@@ -40,11 +40,15 @@ public class AtelierController {
    }
 
 
+   //get by id
+
     @GetMapping("/{id}")
     public Optional<Atelier> getById (@PathVariable Long id){
          return atelierService.getAtelierById(id);
     }
 
+
+    //delete
    @DeleteMapping("/{id}")
     public void  deletAtelier (@PathVariable Long id){
             atelierService.deletAtelier(id);
