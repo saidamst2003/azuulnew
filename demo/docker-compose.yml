@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  # MySQL Database dyal Azul
+  azul-db:
+    image: mysql:8.1
+    container_name: azulN-db
+    environment:
+      MYSQL_DATABASE: azulN_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - azul-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  # Spring Boot Azul App
+  azul-app:
+    build: .
+    container_name: azulN-app
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://azul-db:3306/azulN_db?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      APP_SECRET_KEY: skjdf9283r32!4ljkasd09sdkf023kjljlKJHKSJDFkdf
+      APP_EXPIRATION_TIME: 86400000
+    depends_on:
+      azul-db:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  azul-db-data:
