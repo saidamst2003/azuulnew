@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AtelierDTO;
 import com.example.demo.model.Atelier;
 import com.example.demo.service.AtelierService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,14 +21,15 @@ public class AtelierController {
 
     //create
  @PostMapping
+ @PreAuthorize("hasRole('ADMIN')")
+
  public AtelierDTO createAtelier(@RequestBody AtelierDTO atelierDTO){
         return atelierService.createAtelier(atelierDTO);
 
  }
-
  //update
-
-    @PutMapping("/{id}")
+ @PreAuthorize("hasRole('ADMIN')")
+ @PutMapping("/{id}")
     public AtelierDTO updateAtelier (@PathVariable Long id, @RequestBody AtelierDTO atelierDTO){
         return atelierService.updateAtelier(id,atelierDTO);
     }
@@ -49,7 +51,8 @@ public class AtelierController {
 
 
     //delete
-   @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
     public void  deletAtelier (@PathVariable Long id){
             atelierService.deletAtelier(id);
    }

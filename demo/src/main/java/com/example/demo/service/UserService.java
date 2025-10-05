@@ -66,7 +66,7 @@ public class UserService {
 
             if (authentication.isAuthenticated()) {
                 AuthUserDTO authUser = getAuthenticatedUser(user.getEmail());
-                String token = jwtService.generateJwtToken(authUser);
+                String token = jwtService.generateToken(authUser);
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
                 return new ResponseEntity<>(response, HttpStatus.OK);
