@@ -19,17 +19,17 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-
     private final String SECRET_KEY = "MySuperSecureJWTKeyWith32+Characters!!";
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24h
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateJwtToken(AuthUserDTO user) {
+    public String generateToken(AuthUserDTO user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.id());
-        claims.put("firstName", user.fullName());
+        claims.put("fullName", user.fullName());
         claims.put("email", user.email());
         claims.put("role", user.role().name());
 
@@ -37,33 +37,9 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(user.email())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24h
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));
-    }
-
-    public Long extractUserId(String token) {
-        return extractClaim(token, claims -> {
-            Object id = claims.get("id");
-            if (id instanceof Integer) {
-                return ((Integer) id).longValue();
-            } else if (id instanceof Long) {
-                return (Long) id;
-            }
-            return null;
-        });
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -79,17 +55,38 @@ public class JwtService {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    // Méthodes utiles
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> {
+            Object id = claims.get("id");
+            if (id instanceof Integer) return ((Integer) id).longValue();
+            if (id instanceof Long) return (Long) id;
+            return null;
+        });
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    // Validation token
+    public boolean validateToken(String token, UserDetails userDetails) {
+        return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    public Boolean validateToken(String token, UserPrincipal userPrincipal) {
-        final String username = extractUsername(token);
-        return (username.equals(userPrincipal.getUsername()) && !isTokenExpired(token));
+    public boolean validateToken(String token, UserPrincipal userPrincipal) {
+        return extractUsername(token).equals(userPrincipal.getUsername()) && !isTokenExpired(token);
     }
 }

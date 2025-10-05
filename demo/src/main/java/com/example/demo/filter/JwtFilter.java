@@ -36,25 +36,36 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if (path.equals("/user/login") || path.equals("/user/roles") || path.startsWith("/user/register") || path.equals("/upload")) {
+
+        if (path.equals("/user/login") || path.equals("/user/roles") ||
+                path.startsWith("/user/register") || path.equals("/upload")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            String username = jwtService.extractUsername(token);
+        String token = null;
+        String username = null;
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                var user = userService.findByEmail(username);
-                if (user != null && jwtService.validateToken(token, new UserPrincipal(user))) {
-                    String role = jwtService.extractRole(token);
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(new UserPrincipal(user), null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+            try {
+                username = jwtService.extractUsername(token);
+            } catch (Exception e) {
+                System.err.println("[JWT FILTER] Token invalid: " + e.getMessage());
+            }
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var user = userService.findByEmail(username);
+            if (user != null && jwtService.validateToken(token, new UserPrincipal(user))) {
+                String role = jwtService.extractRole(token);
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(new UserPrincipal(user), null, List.of(authority));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
