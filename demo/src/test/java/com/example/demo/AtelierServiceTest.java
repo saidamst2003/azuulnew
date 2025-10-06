@@ -92,4 +92,15 @@ class AtelierServiceTest {
         verify(atelierRepo, times(1)).findAll();
     }
 
+    @Test
+    void testGetAtelierById() {
+        Long id = 1L;
+        when(atelierRepo.findById(id)).thenReturn(Optional.of(atelier));
+
+        Optional<Atelier> result = atelierService.getAtelierById(id);
+
+        assertTrue(result.isPresent());
+        assertEquals(atelier.getNom(), result.get().getNom());
+        verify(atelierRepo, times(1)).findById(id);
+    }
 }
