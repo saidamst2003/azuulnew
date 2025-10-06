@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class AtelierServiceTest {
@@ -52,6 +53,19 @@ class AtelierServiceTest {
         atelier.setDate(atelierDTO.date());
         atelier.setHeure(atelierDTO.heure());
         atelier.setCategorie(atelierDTO.categorie());
+    }
+
+    @Test
+    void testCreateAtelier() {
+        when(atelierMapper.toEntity(atelierDTO)).thenReturn(atelier);
+        when(atelierRepo.save(atelier)).thenReturn(atelier);
+        when(atelierMapper.toDTO(atelier)).thenReturn(atelierDTO);
+
+        AtelierDTO result = atelierService.createAtelier(atelierDTO);
+
+        assertNotNull(result);
+        assertEquals(atelierDTO.nom(), result.nom());
+        verify(atelierRepo, times(1)).save(atelier);
     }
 
 }
