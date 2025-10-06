@@ -82,4 +82,14 @@ class AtelierServiceTest {
         verify(atelierRepo, times(1)).save(atelier);
     }
 
+    @Test
+    void testGetAllAtelier() {
+        when(atelierRepo.findAll()).thenReturn(Arrays.asList(atelier));
+
+        List<Atelier> ateliers = atelierService.getAllAtelier();
+
+        assertEquals(1, ateliers.size());
+        verify(atelierRepo, times(1)).findAll();
+    }
+
 }
