@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -11,4 +12,5 @@ public record AtelierDTO (
     LocalTime heure,
     String categorie
 ){
+
 }

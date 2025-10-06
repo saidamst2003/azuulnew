@@ -1,0 +1,57 @@
+package com.example.demo;
+
+import com.example.demo.dto.AtelierDTO;
+import com.example.demo.mapper.AtelierMapper;
+import com.example.demo.model.Atelier;
+import com.example.demo.repository.AtelierRepo;
+import com.example.demo.service.AtelierService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class AtelierServiceTest {
+
+    @Mock
+    private AtelierRepo atelierRepo;
+
+    @Mock
+    private AtelierMapper atelierMapper;
+
+    @InjectMocks
+    private AtelierService atelierService;
+
+    private AtelierDTO atelierDTO;
+    private Atelier atelier;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        atelierDTO = new AtelierDTO(
+                "Nom Atelier",
+                "Description Atelier",
+                new Date(),
+                LocalTime.of(10, 0),
+                "Catégorie1"
+        );
+
+        atelier = new Atelier();
+        atelier.setNom(atelierDTO.nom());
+        atelier.setDescription(atelierDTO.description());
+        atelier.setDate(atelierDTO.date());
+        atelier.setHeure(atelierDTO.heure());
+        atelier.setCategorie(atelierDTO.categorie());
+    }
+
+}
