@@ -103,4 +103,15 @@ class AtelierServiceTest {
         assertEquals(atelier.getNom(), result.get().getNom());
         verify(atelierRepo, times(1)).findById(id);
     }
+
+    @Test
+    void testDeleteAtelier() {
+        Long id = 1L;
+
+        doNothing().when(atelierRepo).deleteById(id);
+
+        atelierService.deletAtelier(id);
+
+        verify(atelierRepo, times(1)).deleteById(id);
+    }
 }
