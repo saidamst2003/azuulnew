@@ -68,4 +68,18 @@ class AtelierServiceTest {
         verify(atelierRepo, times(1)).save(atelier);
     }
 
+    @Test
+    void testUpdateAtelier() {
+        Long id = 1L;
+
+        when(atelierRepo.findById(id)).thenReturn(Optional.of(atelier));
+        when(atelierRepo.save(atelier)).thenReturn(atelier);
+        when(atelierMapper.toDTO(atelier)).thenReturn(atelierDTO);
+
+        AtelierDTO result = atelierService.updateAtelier(id, atelierDTO);
+
+        assertEquals(atelierDTO.nom(), result.nom());
+        verify(atelierRepo, times(1)).save(atelier);
+    }
+
 }
